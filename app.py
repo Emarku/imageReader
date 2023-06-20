@@ -55,6 +55,7 @@ if st.button("Run Analysis"):
         output = str(title) + str(sub_dict["Data"])
         st.markdown(f'Data extracted from the chart: ')
         st.markdown(sub_dict["Data"])
+        st.markdown(f'ChatGpt summary: {open_ai_summary([output])}')
         data_json.append(sub_dict["Data"])
         if st.button(f'Click here to go to image source {title}'):
             webbrowser.open_new_tab(sub_dict["URL"])
