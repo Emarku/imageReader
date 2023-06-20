@@ -8,8 +8,7 @@ from scraper import foleon_scraper
 from openai_funtions import open_ai_summary
 import webbrowser
 from PIL import Image
-
-
+from bokeh.models.widgets import Div
 from openai.error import OpenAIError
 from knowledge_gpt.components.sidebar import sidebar
 from knowledge_gpt.utils import (
@@ -58,7 +57,12 @@ if st.button("Run Analysis"):
         st.markdown(f'ChatGpt summary: {open_ai_summary([output])}')
         data_json.append(sub_dict["Data"])
         if st.button(f'Click here to go to image source {title}'):
-            webbrowser.open_new_tab(sub_dict["URL"])
+            js = "window.open(https://www.google.com)"  # New tab or window
+            #js = f"window.location.href = {sub_dict["URL"]}"  # Current tab
+            html = '<img src onerror="{}">'.format(js)
+            div = Div(text=html)
+            st.bokeh_chart(div)
+            '''webbrowser.open_new_tab(sub_dict["URL"])'''
     json_string = json.dumps(data_json)
 
     st.json(json_string, expanded=True)
