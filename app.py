@@ -48,14 +48,25 @@ if st.button("Run Analysis"):
     outputs = foleon_scraper(url)
 
     for title, sub_dict in outputs.items():
+        data_json=[]
         st.title(f'Title: {title}')
         components.iframe(sub_dict["URL"], height=400)
         output = str(title) + str(sub_dict["Data"])
         st.markdown(f'Data extracted from the chart: ')
         st.markdown(sub_dict["Data"])
+        data_json.append(sub_dict["Data"])
         if st.button(f'Click here to go to image source{title}'):
             webbrowser.open_new_tab(sub_dict["URL"])
+    json_string = json.dumps(data_json)
 
+    st.json(json_string, expanded=True)
+
+    st.download_button(
+        label="Download JSON",
+        file_name="data.json",
+        mime="application/json",
+        data=json_string,
+    )
    
     st.title("Upload the file you want to ask questions about:")
     uploaded_file = st.file_uploader(
