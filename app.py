@@ -8,7 +8,9 @@ from scraper import foleon_scraper, download_link
 from openai_funtions import open_ai_summary
 import webbrowser
 from PIL import Image
-from bokeh.models.widgets import Div
+import warnings
+ 
+warnings.simplefilter("ignore", UserWarning)
 from openai.error import OpenAIError
 from knowledge_gpt.components.sidebar import sidebar
 from knowledge_gpt.utils import (
