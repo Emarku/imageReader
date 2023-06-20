@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import json
-from scraper import foleon_scraper
+from scraper import foleon_scraper, download_link
 from openai_funtions import open_ai_summary
 import webbrowser
 from PIL import Image
@@ -35,7 +35,9 @@ st.title('Gleeds Foleon Interpreter')
 def clear_submit():
     st.session_state["submit"] = False
 
-
+# --- Initialising SessionState ---
+if "load_state" not in st.session_state:
+     st.session_state.load_state = False
 #st.set_page_config(page_title="KnowledgeGPT", page_icon="📖", layout="wide")
 #st.header("📖KnowledgeGPT")
 
@@ -44,31 +46,27 @@ sidebar()
 
 
 url = st.text_input("Input Foleon Page URL")
-if st.button("Run Analysis"):
+if st.button("Run Analysis") or st.session_state.load_state:
+    st.session_state.load_state=True
     outputs = foleon_scraper(url)
 
     for title, sub_dict in outputs.items():
-        data_json=[]
+        dataAll=[]    
         st.title(f'Title: {title}')
         components.iframe(sub_dict["URL"], height=400)
         output = str(title) + str(sub_dict["Data"])
         st.markdown(f'Data extracted from the chart: ')
         st.markdown(sub_dict["Data"])
         st.markdown(f'ChatGpt summary: {open_ai_summary([output])}')
-        data_json.append(sub_dict["Data"])
-        if st.button(f'Click here to go to image source {title}'):
-            st.write(f"[check out this link]({sub_dict['URL']})")
-    json_string = json.dumps(data_json)
+        dataAll.append(open_ai_summary([output]))
+        url=sub_dict["URL"]
+        st.markdown("Check out this [link](%s) for the chart source" % url)
+        st.markdown("Summary of all charts")
 
-    st.json(json_string, expanded=True)
-    
-    st.download_button(
-        label="Download JSON",
-        file_name="data.json",
-        mime="application/json",
-        data=json_string,
-    )
-   
+    dataAll=''.join(dataAll)
+    st.markdown(dataAll)
+    st.download_button('Download text', dataAll, 'text')
+ 
     st.title("Upload the file you want to ask questions about:")
     uploaded_file = st.file_uploader(
         "Upload a pdf, docx, or txt file",

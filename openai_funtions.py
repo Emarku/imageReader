@@ -4,7 +4,7 @@ def open_ai_summary(input_data):
     '''This takes a prompt and returns openAI output'''
 
     # Set up your OpenAI API credentials
-    openai.api_key = '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'
+    openai.api_key = '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'
     #openai.api_key = set_open_api_key(api_key_input)
     # Define the chart data extracted from the image
     prompt_pre_amble = "The following data has been extracted from a chart. Reinterpret the data in a clean form and give a shor summary and some insights:"
