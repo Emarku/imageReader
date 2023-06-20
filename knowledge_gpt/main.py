@@ -1,41 +1,8 @@
 import streamlit as st
-import streamlit.components.v1 as components
-import requests
-from bs4 import BeautifulSoup
-import re
-import json
-from scraper import foleon_scraper
-from openai_funtions import open_ai_summary
-import webbrowser
-from PIL import Image
-
-im = Image.open("image.png")
-im2=Image.open("Untitled.png")
-st.set_page_config(
-        page_title="Charts reader for Gleeds report",
-        page_icon=im,
-        layout="wide",
-    )
-# User Inputs
-st.image(im2)
-st.title('Gleeds Foleon Interpreter')
-url = st.text_input("Input Foleon Page URL")
-if st.button("Run Analysis"):
-    outputs = foleon_scraper(url)
-
-    for title, sub_dict in outputs.items():
-        st.title(f'Title: {title}')
-        components.iframe(sub_dict["URL"], height=400)
-        output = str(title) + str(sub_dict["Data"])
-        st.markdown(f'Data extracted from the chart: ')
-        st.markdown(sub_dict["Data"])
-        if st.button(f'Click here to go to image source{title}'):
-            webbrowser.open_new_tab(sub_dict["URL"])
-
-
 from openai.error import OpenAIError
-from .knowledge_gp.knowledge_gpt.components.sidebar import sidebar
-from .knowledge_gp.knowledge_gpt.utils import (
+
+from knowledge_gpt.components.sidebar import sidebar
+from knowledge_gpt.utils import (
     embed_docs,
     get_answer,
     get_sources,
@@ -52,7 +19,7 @@ def clear_submit():
     st.session_state["submit"] = False
 
 
-#st.set_page_config(page_title="KnowledgeGPT", page_icon="📖", layout="wide")
+st.set_page_config(page_title="KnowledgeGPT", page_icon="📖", layout="wide")
 st.header("📖KnowledgeGPT")
 
 sidebar()
@@ -126,5 +93,3 @@ if button or st.session_state.get("submit"):
 
         except OpenAIError as e:
             st.error(e._message)
-    #st.markdown(open_ai_summary([output]))
-
