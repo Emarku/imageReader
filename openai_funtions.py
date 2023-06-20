@@ -1,11 +1,11 @@
 import openai
-
+from knowledge_gpt.components.sidebar import set_openai_api_key
 def open_ai_summary(input_data):
     '''This takes a prompt and returns openAI output'''
 
     # Set up your OpenAI API credentials
     openai.api_key = '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'
-
+    #openai.api_key = set_open_api_key(api_key_input)
     # Define the chart data extracted from the image
     prompt_pre_amble = "interpret and summarize this data:"
     
@@ -13,7 +13,7 @@ def open_ai_summary(input_data):
 
     # Generate optimized text using ChatGPT API
     response = openai.Completion.create(
-        engine='text-davinci-003',
+        engine='gpt-3.5-turbo',
         prompt=openai_prompt,
         max_tokens=100,
         n=1,
