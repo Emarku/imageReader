@@ -47,8 +47,9 @@ if st.button("Run Analysis") or st.session_state.load_state:
         output = str(title) + str(sub_dict["Data"])
         st.markdown(f'Data extracted from the chart: ')
         st.markdown(sub_dict["Data"])
-        st.markdown(f'ChatGpt summary: {open_ai_summary([output],apiKey)}')
-        dataAll.append(open_ai_summary([output]))
+        summary=open_ai_summary([output],apiKey)
+        st.markdown(f'ChatGpt summary: {summary}')
+        dataAll.append(str(summary))
         url=sub_dict["URL"]
         st.markdown("Check out this [link](%s) for the chart source" % url)
         st.markdown("Summary of all charts")
