@@ -58,4 +58,6 @@ if st.button("Run Analysis") or st.session_state.load_state:
     st.markdown(dataAll)
     st.download_button('Download text', dataAll, 'text')
  
-    st.title("Upload the file you want to ask questions about:")
+    st.title("Upload the file you want to ask questions about by clicking the link below:")
+    url2='https://knowledgegpt.streamlit.app/'
+    st.markdown("Check out this [link](%s) for more" % url2)
